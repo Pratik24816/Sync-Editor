@@ -1,13 +1,22 @@
+require('dotenv').config();
+
+const mongoURI = process.env.MONGO_URI;
+const port = process.env.PORT;
 const mongoose=require("mongoose");
 const Document=require("./Document");
+// const express = require('express');
 
-mongoose.connect("mongodb://localhost/SyncDB")
+// const app = express();
+
+mongoose.connect(mongoURI)
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.log("Error connecting to MongoDB", err));
 
 
+// app.use(express.json());
 
-const io=require('socket.io')(3001,{
+
+const io=require('socket.io')(port,{
     cors:{
         origin:"*",
         methods:["GET","POST"],
@@ -46,3 +55,12 @@ async function findOrCreateDoc(id){
 
     return await Document.create({_id:id,data:defaultValues});
 }
+
+// app.get('/', (req, res) => {
+//     res.json({ message: 'Welcome to the API!' });
+//   });
+  
+//   // Start the server
+//   app.listen(port, () => {
+//     console.log(`Server is running on http://localhost:`);
+//   });
